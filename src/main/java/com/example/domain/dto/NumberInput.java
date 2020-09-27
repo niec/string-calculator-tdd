@@ -1,4 +1,4 @@
-package com.example;
+package com.example.domain.dto;
 
 public class NumberInput {
     private String numbers;

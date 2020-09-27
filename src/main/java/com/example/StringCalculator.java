@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.domain.dto.NumberInput;
+
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
