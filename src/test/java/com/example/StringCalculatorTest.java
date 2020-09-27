@@ -79,4 +79,10 @@ public class StringCalculatorTest {
         int result = calculator.add("//[*][%]\n1*2%3");
         Assert.assertEquals(6, result);
     }
+
+    @Test
+    public void shouldSupportSettingMultipleMultipleCharacterDelimiters() {
+        int result = calculator.add("//[**][##%]\n20**30##%50");
+        Assert.assertEquals(100, result);
+    }
 }
