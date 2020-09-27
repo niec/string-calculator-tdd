@@ -33,4 +33,11 @@ public class StringCalculatorTest {
         Assert.assertEquals(3, result);
     }
 
+    @Test
+    public void shouldReturnNumbersSumForAMultipleNumberString() {
+        int result = calculator.add("1,2,3,100,200");
+
+        Assert.assertEquals(306, result);
+    }
+
 }
