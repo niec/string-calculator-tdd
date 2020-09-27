@@ -61,4 +61,10 @@ public class StringCalculatorTest {
 
         calculator.add("//;\n1;2;-3;-4");
     }
+
+    @Test
+    public void shouldIgnoreNumbersGreaterThan1000() {
+        int result = calculator.add("//;\n15;20;1001;1000");
+        Assert.assertEquals(1035, result);
+    }
 }
