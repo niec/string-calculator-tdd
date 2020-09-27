@@ -67,4 +67,10 @@ public class StringCalculatorTest {
         int result = calculator.add("//;\n15;20;1001;1000");
         Assert.assertEquals(1035, result);
     }
+
+    @Test
+    public void shouldSupportSettingLongerThan1CharacterDelimiter() {
+        int result = calculator.add("//[***]\n1***2");
+        Assert.assertEquals(3, result);
+    }
 }
