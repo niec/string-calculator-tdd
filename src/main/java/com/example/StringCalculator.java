@@ -10,6 +10,8 @@ public class StringCalculator {
         } else if (numbers.length() == 1) {
             return Integer.parseInt(numbers);
         } else {
+            numbers = numbers.replaceAll("\n", ",");
+
             return Arrays.stream(numbers.split(","))
                     .map(Integer::parseInt)
                     .reduce((n1, n2) -> n1 + n2)
