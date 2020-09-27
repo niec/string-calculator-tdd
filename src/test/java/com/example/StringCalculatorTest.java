@@ -41,9 +41,16 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void shouldSupportNewLineCharacterAsDelimeter() {
+    public void shouldSupportNewLineCharacterAsDelimiter() {
         int result = calculator.add("1\n2,3");
 
         Assert.assertEquals(6, result);
+    }
+
+    @Test
+    public void shouldSupportSettingDelimiterInFirstLine() {
+        int result = calculator.add("//;\n1;2");
+
+        Assert.assertEquals(3, result);
     }
 }
