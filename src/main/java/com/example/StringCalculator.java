@@ -14,7 +14,7 @@ public class StringCalculator {
     private final Pattern firstLineWithDelimiterPattern = Pattern.compile("\\/\\/.+\\\n");
     private Matcher matcher;
     private static final String DEFAULT_DELIMITER = ",";
-    private final Pattern multipleCharacterDelimiterPattern = Pattern.compile("\\[.+\\]");
+    private final Pattern delimiterInSquareBracesPattern = Pattern.compile("\\[[^\\[\\]]+\\]");
 
     int add(String numbers) {
         var input = new NumberInput(numbers);
@@ -24,9 +24,10 @@ public class StringCalculator {
         } else if (input.getNumbers().length() == 1) {
             return Integer.parseInt(input.getNumbers());
         } else {
-            final String delimiter = getDelimiter(input);
+            final List<String> delimiter = getDelimiters(input);
 
-            Optional<Integer> result = processNumbers(input.getNumbers().replaceAll("\n", ","), delimiter)
+            Optional<Integer> result = processNumbers(
+                    replaceCustomDelimitersWithDefaultDelimiter(delimiter, input.getNumbers()).replaceAll("\n", DEFAULT_DELIMITER))
                     .stream()
                     .reduce((n1, n2) -> n1 + n2);
 
@@ -34,33 +35,40 @@ public class StringCalculator {
         }
     }
 
-    private String getDelimiter(NumberInput input) {
+    private List<String> getDelimiters(NumberInput input) {
         matcher = firstLineWithDelimiterPattern.matcher(input.getNumbers());
         if (matcher.find()) {
             input.setNumbers(input.getNumbers().replace(matcher.group(0), "")); //remove first line
-            return obtainSingleDelimiter(matcher.group(0));
+            return obtainDelimiters(matcher.group(0));
         }
-        return DEFAULT_DELIMITER;
+        return new ArrayList<>();
     }
 
-    private String obtainSingleDelimiter(String firstLine) {
-        matcher = multipleCharacterDelimiterPattern.matcher(firstLine);
+    private List<String> obtainDelimiters(String firstLine) {
+        final List<String> delimiters = new ArrayList<>();
+
+        matcher = delimiterInSquareBracesPattern.matcher(firstLine);
         if (matcher.find()) {
-            return obtainSingleDelimiterInSquareBracket(matcher.group(0));
+            do {
+                delimiters.add(obtainSingleDelimiterInSquareBracket(matcher.group(0)));
+            } while (matcher.find());
+
+            return delimiters;
         }
 
-        return firstLine.substring(firstLine.indexOf("//") + 2, firstLine.indexOf("\n"));
+        delimiters.add(firstLine.substring(firstLine.indexOf("//") + 2, firstLine.indexOf("\n")));
+        return delimiters;
     }
 
     private String obtainSingleDelimiterInSquareBracket(String delimiterInSquareBracket) {
         return delimiterInSquareBracket.substring(1, delimiterInSquareBracket.length() - 1);
     }
 
-    private List<Integer> processNumbers(String numbers, String delimiter) {
+    private List<Integer> processNumbers(String numbers) {
         final List<Integer> numberList = new ArrayList<>();
         final List<Integer> negativeNumberList = new ArrayList<>();
 
-        for (String number : numbers.split(Pattern.quote(delimiter))) {
+        for (String number : numbers.split(DEFAULT_DELIMITER)) {
             int i = Integer.parseInt(number);
 
             if (i <= 1000) {
@@ -77,5 +85,12 @@ public class StringCalculator {
         }
 
         return numberList;
+    }
+
+    private String replaceCustomDelimitersWithDefaultDelimiter(List<String> customDelimiters, String numbers) {
+        for (String customDelimiter : customDelimiters) {
+            numbers = (numbers.replaceAll(Pattern.quote(customDelimiter), DEFAULT_DELIMITER));
+        }
+        return numbers;
     }
 }
