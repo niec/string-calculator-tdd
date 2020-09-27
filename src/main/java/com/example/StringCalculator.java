@@ -1,5 +1,7 @@
 package com.example;
 
+import java.util.Arrays;
+
 public class StringCalculator {
 
     int add(String numbers) {
@@ -9,7 +11,11 @@ public class StringCalculator {
             return Integer.parseInt(numbers);
         } else {
             String[] numberArray = numbers.split(",");
-            return Integer.parseInt(numberArray[0]) + Integer.parseInt(numberArray[1]);
+
+            return Arrays.stream(numberArray)
+                    .map(Integer::parseInt)
+                    .reduce((n1, n2) -> n1 + n2)
+                    .get();
         }
     }
 }
