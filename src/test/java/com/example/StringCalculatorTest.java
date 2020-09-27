@@ -2,10 +2,15 @@ package com.example;
 
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 public class StringCalculatorTest {
     private static StringCalculator calculator;
+
+    @Rule
+    public ExpectedException exceptionRule = ExpectedException.none();
 
     @BeforeClass
     public static void setup() {
@@ -52,5 +57,13 @@ public class StringCalculatorTest {
         int result = calculator.add("//;\n1;2");
 
         Assert.assertEquals(3, result);
+    }
+
+    @Test
+    public void shouldThrowNegativesNotAllowedExceptionWhenNegativeNumbersPassed() {
+        exceptionRule.expect(NegativesNotAllowedException.class);
+        exceptionRule.expectMessage("Negatives not allowed: -3");
+
+        calculator.add("//;\n1;2;-3");
     }
 }
