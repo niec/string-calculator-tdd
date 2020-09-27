@@ -1,8 +1,12 @@
 package com.example;
 
 import com.example.domain.dto.NumberInput;
+import com.example.exceptions.NegativesNotAllowedException;
+import com.google.common.base.Joiner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -21,11 +25,8 @@ public class StringCalculator {
         } else {
             final String delimiter = getDelimiter(input);
 
-            return Arrays.stream(
-                    input.getNumbers()
-                            .replaceAll("\n", ",")
-                            .split(delimiter))
-                    .map(Integer::parseInt)
+            return processNumbers(input.getNumbers().replaceAll("\n", ","), delimiter)
+                    .stream()
                     .reduce((n1, n2) -> n1 + n2)
                     .get();
         }
@@ -44,4 +45,22 @@ public class StringCalculator {
         return firstLine.substring(firstLine.indexOf("//") + 2, firstLine.indexOf("\n"));
     }
 
+    private List<Integer> processNumbers(String numbers, String delimiter) {
+        final List<Integer> numberList = new ArrayList<>();
+        final List<Integer> negativeNumberList = new ArrayList<>();
+
+        for (String number : numbers.split(delimiter)) {
+            int i = Integer.parseInt(number);
+            numberList.add(i);
+            if (i < 0) {
+                negativeNumberList.add(i);
+            }
+        }
+
+        if (!negativeNumberList.isEmpty()) {
+            throw new NegativesNotAllowedException("Negatives not allowed: " + Joiner.on(',').join(negativeNumberList));
+        }
+
+        return numberList;
+    }
 }
