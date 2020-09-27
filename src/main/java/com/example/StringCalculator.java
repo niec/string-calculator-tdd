@@ -7,6 +7,7 @@ import com.google.common.base.Joiner;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,10 +26,11 @@ public class StringCalculator {
         } else {
             final String delimiter = getDelimiter(input);
 
-            return processNumbers(input.getNumbers().replaceAll("\n", ","), delimiter)
+            Optional<Integer> result = processNumbers(input.getNumbers().replaceAll("\n", ","), delimiter)
                     .stream()
-                    .reduce((n1, n2) -> n1 + n2)
-                    .get();
+                    .reduce((n1, n2) -> n1 + n2);
+
+            return result.isPresent() ? result.get() : 0;
         }
     }
 
@@ -51,7 +53,11 @@ public class StringCalculator {
 
         for (String number : numbers.split(delimiter)) {
             int i = Integer.parseInt(number);
-            numberList.add(i);
+
+            if (i <= 1000) {
+                numberList.add(i);
+            }
+
             if (i < 0) {
                 negativeNumberList.add(i);
             }
