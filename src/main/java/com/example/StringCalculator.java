@@ -35,9 +35,9 @@ public class StringCalculator {
     }
 
     private String getDelimiter(NumberInput input) {
-        this.matcher = customDelimiterPattern.matcher(input.getNumbers());
+        matcher = customDelimiterPattern.matcher(input.getNumbers());
         if (matcher.find()) {
-            input.setNumbers(input.getNumbers().substring(input.getNumbers().indexOf('\n') + 1)); //remove first line
+            input.setNumbers(input.getNumbers().replace(matcher.group(0), "")); //remove first line
             return obtainSingleDelimiter(matcher.group(0));
         }
         return DEFAULT_DELIMITER;
