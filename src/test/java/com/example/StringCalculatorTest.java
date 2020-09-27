@@ -20,38 +20,32 @@ public class StringCalculatorTest {
 
     @Test
     public void shouldReturn0ForAnEmptyString() {
-        int result = calculator.add("");
-        Assert.assertEquals(0, result);
+        Assert.assertEquals(0, calculator.add(""));
     }
 
     @Test
     public void shouldReturnNumberForASingleNumberString() {
-        int result = calculator.add("1");
-        Assert.assertEquals(1, result);
+        Assert.assertEquals(1, calculator.add("1"));
     }
 
     @Test
     public void shouldReturnNumbersSumForADoubleNumberString() {
-        int result = calculator.add("1,2");
-        Assert.assertEquals(3, result);
+        Assert.assertEquals(3, calculator.add("1,2"));
     }
 
     @Test
     public void shouldReturnNumbersSumForAMultipleNumberString() {
-        int result = calculator.add("1,2,3,100,200");
-        Assert.assertEquals(306, result);
+        Assert.assertEquals(306, calculator.add("1,2,3,100,200"));
     }
 
     @Test
     public void shouldSupportNewLineCharacterAsDelimiter() {
-        int result = calculator.add("1\n2,3");
-        Assert.assertEquals(6, result);
+        Assert.assertEquals(6, calculator.add("1\n2,3"));
     }
 
     @Test
     public void shouldSupportSettingDelimiterInFirstLine() {
-        int result = calculator.add("//;\n1;2");
-        Assert.assertEquals(3, result);
+        Assert.assertEquals(3, calculator.add("//;\n1;2"));
     }
 
     @Test
@@ -64,25 +58,21 @@ public class StringCalculatorTest {
 
     @Test
     public void shouldIgnoreNumbersGreaterThan1000() {
-        int result = calculator.add("//;\n15;20;1001;1000");
-        Assert.assertEquals(1035, result);
+        Assert.assertEquals(1035, calculator.add("//;\n15;20;1001;1000"));
     }
 
     @Test
     public void shouldSupportSettingLongerThan1CharacterDelimiter() {
-        int result = calculator.add("//[***]\n1***2***3");
-        Assert.assertEquals(6, result);
+        Assert.assertEquals(6, calculator.add("//[***]\n1***2***3"));
     }
 
     @Test
     public void shouldSupportSettingMultipleSingleCharacterDelimiters() {
-        int result = calculator.add("//[*][%]\n1*2%3");
-        Assert.assertEquals(6, result);
+        Assert.assertEquals(6, calculator.add("//[*][%]\n1*2%3"));
     }
 
     @Test
     public void shouldSupportSettingMultipleMultipleCharacterDelimiters() {
-        int result = calculator.add("//[**][##%]\n20**30##%50");
-        Assert.assertEquals(100, result);
+        Assert.assertEquals(100, calculator.add("//[**][##%]\n20**30##%50"));
     }
 }
