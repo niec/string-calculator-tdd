@@ -75,7 +75,7 @@ public class StringCalculatorTest {
     }
 
     @Test
-    public void shouldSupportSettingMultipleDelimiters() {
+    public void shouldSupportSettingMultipleSingleCharacterDelimiters() {
         int result = calculator.add("//[*][%]\n1*2%3");
         Assert.assertEquals(6, result);
     }
