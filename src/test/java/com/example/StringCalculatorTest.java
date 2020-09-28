@@ -1,6 +1,6 @@
 package com.example;
 
-import com.example.exceptions.NegativesNotAllowedException;
+import com.example.domain.exceptions.NegativesNotAllowedException;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -75,4 +75,5 @@ public class StringCalculatorTest {
     public void shouldSupportSettingMultipleMultipleCharacterDelimiters() {
         Assert.assertEquals(100, calculator.add("//[**][##%]\n20**30##%50"));
     }
+
 }
